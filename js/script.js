@@ -33,6 +33,11 @@ const appData = {
   isCalculated: false,
 
   init: function () {
+    const cmsCheckbox = document.querySelector("#cms-open");
+    const cmsBlock = document.querySelector(".hidden-cms-variants");
+    const cmsSelect = cmsBlock.querySelector("select");
+    const cmsOtherInput = cmsBlock.querySelector(".main-controls__input");
+
     this.addTitle();
     handlerBtns.disabled = true;
 
@@ -58,6 +63,36 @@ const appData = {
     document
       .querySelector("#reset")
       .addEventListener("click", this.reset.bind(this));
+
+    cmsCheckbox.addEventListener("change", () => {
+      if (cmsCheckbox.checked) {
+        cmsBlock.style.display = "flex";
+      } else {
+        cmsBlock.style.display = "none";
+      }
+    });
+    cmsSelect.addEventListener("change", () => {
+      if (cmsSelect.value === "other") {
+        cmsOtherInput.style.display = "block";
+      } else {
+        cmsOtherInput.style.display = "none";
+      }
+
+      if (!isNaN(cmsSelect.value) && appData.isCalculated) {            //no idea if it works correctly
+        const percent = +cmsSelect.value;
+
+        const base =
+          appData.screenPrice +
+          appData.servicePricesPercent +
+          appData.servicePricesNumber;
+
+        const extra = base * (percent / 100);
+        const newTotal = base + extra;
+
+        appData.fullPrice = newTotal;
+        fullTotalCount.value = newTotal.toFixed(2);
+      }
+    });
   },
   addTitle: function () {
     document.title = title.textContent;
@@ -78,6 +113,11 @@ const appData = {
     fullTotalCount.value = "";
     totalCountRollback.value = "";
 
+    const cmsCheckbox = document.querySelector("#cms-open");
+    const cmsBlock = document.querySelector(".hidden-cms-variants");
+    const cmsSelect = cmsBlock.querySelector("select");
+    const cmsOtherInput = cmsBlock.querySelector(".main-controls__input");
+
     const inputs = document.querySelectorAll(
       ".screen input, .screen select, .other-items input[type=text]",
     );
@@ -92,6 +132,11 @@ const appData = {
     document.querySelector("#reset").style.display = "none";
 
     this.isCalculated = false;
+
+    cmsCheckbox.checked = false;
+    cmsBlock.style.display = "none";
+    cmsSelect.selectedIndex = 0;
+    cmsOtherInput.style.display = "none";
   },
   showResult: function () {
     totalInputs.value = this.screenPrice;
