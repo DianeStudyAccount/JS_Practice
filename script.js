@@ -17,18 +17,28 @@ const DOMelement = function (selector, height, width, bg, fontSize) {
         element.id = this.selector.slice(1);
       }
 
-      element.textContent = "I am an example";
+      element.textContent = "";
 
       element.style.cssText = `
         height: ${this.height}px;
         width: ${this.width}px;
         background: ${this.bg};
         font-size: ${this.fontSize};
+        position: absolute;
+        top: 0;
+        left: 0;
     `;
 
-    document.body.append(element);
+      document.body.append(element);
     }));
 };
 
-const exampleEl = new DOMelement('.text', 100, 300, 'hotpink', '20px');
-exampleEl.createElement();
+// const exampleEl = new DOMelement('.text', 100, 300, 'hotpink', '20px');
+// exampleEl.createElement();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const square = new DOMelement(".square", 100, 100, "hotpink");
+  square.createElement();
+
+  document.addEventListener("keydown", () => {});
+});
